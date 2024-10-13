@@ -19,4 +19,4 @@ If applicable, add screenshots to help explain your problem.
 Add any other context about the problem here.
 
 **Definition of done**
-This bug can be considered fixed if 
+This bug can be considered fixed if
