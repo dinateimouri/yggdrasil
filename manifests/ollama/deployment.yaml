@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+        - name: ollama
+          image: ollama/ollama
+          ports:
+            - containerPort: 11434
+              hostPort: 11434 # To expose the port on Kind env
+          volumeMounts:
+          - mountPath: ollama
+            name: ollama-volume
+      volumes:
+        - name: ollama-volume
+          emptyDir:
+            sizeLimit: 2Gi
