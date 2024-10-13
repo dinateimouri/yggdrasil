@@ -26,6 +26,13 @@ git clone git@github.com:dinateimouri/yggdrasil.git
 ./scripts/startup.sh
 ```
 
+### Running the tests
+
+To minimize the required packages for the stack `unittest` is used. To run the unit tests manually, you need to run:
+
+```bash
+python3 -m unittest
+```
 
 ## Cleanup
 

@@ -6,6 +6,7 @@ repos:
   - id: end-of-file-fixer
   - id: check-yaml
   - id: name-tests-test
+    args: ["--unittest"]
   - id: check-case-conflict
 
 - repo: https://github.com/pycqa/flake8
@@ -22,3 +23,15 @@ repos:
   rev: v2.2.6
   hooks:
     - id: codespell
+
+- repo: local
+  hooks:
+    - id: tests
+      name: run tests
+      entry: python3 -m unittest discover
+      language: python
+      'types': [python]
+      additional_dependencies:
+      - "fastapi[standard]"
+      pass_filenames: false
+      stages: [pre-commit]
