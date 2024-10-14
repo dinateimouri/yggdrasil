@@ -3,6 +3,7 @@ from api.utils import (
     profanity_replace,
     detect_harmful_content,
     similarity_cosine,
+    similarity_euclidean,
 )
 
 
@@ -166,6 +167,79 @@ class TestSimilarityCosine(unittest.TestCase):
                     'input2': {
                         'input1': 0.0,
                         'input2': 1.0,
+                    },
+                },
+                'successful': True,
+            },
+        )
+
+
+class TestSimilarityEuclidean(unittest.TestCase):
+    def test_similarity_euclidean_non_list_input(self):
+        """
+        Test similarity_euclidean function with non-list input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean("input"),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_euclidean_empty_list_input(self):
+        """
+        Test similarity_euclidean function with empty list input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean([]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_euclidean_same_input(self):
+        """
+        Test similarity_euclidean function with same input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean(["input1", "input1"]),
+            {
+                'similarity_matrix': {
+                    "input1": {"input1": 1.0},
+                },
+                'successful': True,
+            },
+        )
+
+    def test_similarity_euclidean_not_string_input(self):
+        """
+        Test similarity_euclidean function with not string input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean([123, 123]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_euclidean_different_input(self):
+        """
+        Test similarity_euclidean function with different input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean(["input1", "input2"]),
+            {
+                'similarity_matrix': {
+                    'input1': {
+                        'input1': 0.0,
+                        'input2': 1.4142135623730951,
+                    },
+                    'input2': {
+                        'input1': 1.4142135623730951,
+                        'input2': 0.0,
                     },
                 },
                 'successful': True,
