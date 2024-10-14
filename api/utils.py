@@ -1,5 +1,8 @@
 import os.path as path
 from transformers import pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
 
 
 def profanity_replace(input):
@@ -108,3 +111,57 @@ def detect_harmful_content(pipe, input_text):
         return None
     except Exception:
         return None
+
+
+def similarity_cosine(input_list):
+    """
+    This function takes a list of strings as input and calculates the cosine
+    similarity between the strings.
+    The function returns a dictionary with keys: successful, similarity_matrix.
+
+    :param input_list: list of strings
+    :return: dictionary with keys: successful, similarity_matrix
+    """
+
+    try:
+        # Input validation
+        if not isinstance(input_list, list):
+            raise TypeError
+        if len(input_list) < 2:
+            raise TypeError
+        if not all(isinstance(x, str) for x in input_list):
+            raise TypeError
+        if len(set(input_list)) == 1:
+            return {
+                "successful": True,
+                "similarity_matrix":
+                {
+                    input_list[0]: {
+                        input_list[0]: 1.0,
+                    },
+                },
+            }
+
+        # Convert the texts to TF-IDF vectors
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(input_list)
+
+        # Compute cosine similarity
+        cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+        # Display the results as a DataFrame for better readability
+        cosine_sim_df = pd.DataFrame(
+            cosine_sim,
+            index=input_list,
+            columns=input_list,
+        )
+
+        # Output the cosine similarity matrix
+        output = {}
+        output['successful'] = True
+        output['similarity_matrix'] = cosine_sim_df.to_dict()
+
+        return output
+
+    except TypeError:
+        return {"successful": False, "similarity_matrix": None}
