@@ -35,5 +35,7 @@ repos:
       additional_dependencies:
       - "fastapi[standard]"
       - "transformers"
+      - "scikit-learn"
+      - "pandas"
       pass_filenames: false
       stages: [pre-commit]
