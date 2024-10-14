@@ -1,5 +1,7 @@
 # Yggdrasil
 
+[![Tests](https://github.com/dinateimouri/yggdrasil/actions/workflows/test-api.yaml/badge.svg?branch=main)](https://github.com/dinateimouri/yggdrasil/actions/workflows/test-api.yaml)
+
 Yggdrasil is a project named after [the Norse tree of life](https://en.wikipedia.org/wiki/Yggdrasil). It is basically adding an API layer over [Ollama](https://ollama.com/) deployed on top of [Kubernetes](https://kubernetes.io). The API is responsible to receive multiple prompts and perform some functions such as similarity, offensive contents detection and handling them.
 
 ```mermaid
