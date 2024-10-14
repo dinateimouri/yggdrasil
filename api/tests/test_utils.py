@@ -4,6 +4,7 @@ from api.utils import (
     detect_harmful_content,
     similarity_cosine,
     similarity_euclidean,
+    similarity_manhattan,
 )
 
 
@@ -239,6 +240,79 @@ class TestSimilarityEuclidean(unittest.TestCase):
                     },
                     'input2': {
                         'input1': 1.4142135623730951,
+                        'input2': 0.0,
+                    },
+                },
+                'successful': True,
+            },
+        )
+
+
+class TestSimilarityManhattan(unittest.TestCase):
+    def test_similarity_manhattan_non_list_input(self):
+        """
+        Test similarity_manhattan function with non-list input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan("input"),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_manhattan_empty_list_input(self):
+        """
+        Test similarity_manhattan function with empty list input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan([]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_manhattan_same_input(self):
+        """
+        Test similarity_manhattan function with same input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan(["input1", "input1"]),
+            {
+                'similarity_matrix': {
+                    "input1": {"input1": 1.0},
+                },
+                'successful': True,
+            },
+        )
+
+    def test_similarity_manhattan_not_string_input(self):
+        """
+        Test similarity_manhattan function with not string input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan([123, 123]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_manhattan_different_input(self):
+        """
+        Test similarity_manhattan function with different input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan(["input1", "input2"]),
+            {
+                'similarity_matrix': {
+                    'input1': {
+                        'input1': 0.0,
+                        'input2': 2.0,
+                    },
+                    'input2': {
+                        'input1': 2.0,
                         'input2': 0.0,
                     },
                 },
