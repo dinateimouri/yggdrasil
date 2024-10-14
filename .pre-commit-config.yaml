@@ -23,6 +23,7 @@ repos:
   rev: v2.2.6
   hooks:
     - id: codespell
+      exclude: "api/config/"
 
 - repo: local
   hooks:
