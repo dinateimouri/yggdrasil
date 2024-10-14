@@ -1,5 +1,9 @@
 import unittest
-from api.utils import profanity_replace, detect_harmful_content
+from api.utils import (
+    profanity_replace,
+    detect_harmful_content,
+    similarity_cosine,
+)
 
 
 class test_profanity_replace(unittest.TestCase):
@@ -94,3 +98,76 @@ class TestHandleHarmfulContent(unittest.TestCase):
         Test handle_harmful_content function with invalid text input scenario
         """
         self.assertIsNone(detect_harmful_content("pipe", "text"))
+
+
+class TestSimilarityCosine(unittest.TestCase):
+    def test_similarity_cosine_non_list_input(self):
+        """
+        Test similarity_cosine function with non-list input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine("input"),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_cosine_empty_list_input(self):
+        """
+        Test similarity_cosine function with empty list input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine([]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_cosine_same_input(self):
+        """
+        Test similarity_cosine function with same input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine(["input1", "input1"]),
+            {
+                'similarity_matrix': {
+                    "input1": {"input1": 1.0},
+                },
+                'successful': True,
+            },
+        )
+
+    def test_similarity_cosine_not_string_input(self):
+        """
+        Test similarity_cosine function with not string input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine([123, 123]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_cosine_different_input(self):
+        """
+        Test similarity_cosine function with different input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine(["input1", "input2"]),
+            {
+                'similarity_matrix': {
+                    'input1': {
+                        'input1': 1.0,
+                        'input2': 0.0,
+                    },
+                    'input2': {
+                        'input1': 0.0,
+                        'input2': 1.0,
+                    },
+                },
+                'successful': True,
+            },
+        )
