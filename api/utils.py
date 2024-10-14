@@ -1,4 +1,5 @@
 import os.path as path
+from transformers import pipeline
 
 
 def profanity_replace(input):
@@ -56,3 +57,22 @@ def profanity_replace(input):
             'profanity_found': False,
             'successful': False,
         }
+
+
+def load_text_classification_pipeline():
+    """
+    This function loads the text classification toxic bert pipeline
+    from the Hugging Face. More details can be found here:
+    https://huggingface.co/unitary/toxic-bert
+
+    return: pipeline object
+    """
+    try:
+        # Load the pipeline
+        pipe = pipeline("text-classification", model="unitary/toxic-bert")
+
+        # Load it to the memory, to make sure it's fast
+        pipe("This is a test")
+        return pipe
+    except Exception:
+        return None
