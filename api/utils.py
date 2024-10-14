@@ -78,7 +78,7 @@ def load_text_classification_pipeline():
         return None
 
 
-def handle_harmful_content(pipe, input_text):
+def detect_harmful_content(pipe, input_text):
     """
     This function takes a string as input and checks if the input text is
     harmful.
