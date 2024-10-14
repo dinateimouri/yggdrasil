@@ -1,5 +1,7 @@
 from fastapi import FastAPI, status
 from api.health_check import HealthCheckResponse
+import api.utils as utils
+
 
 description = """
 Yggdrasil helps you to interact with Large Language Models of choice running
@@ -25,6 +27,9 @@ app = FastAPI(
         "url": "https://github.com/dinateimouri/yggdrasil/blob/main/LICENSE",
     },
 )
+
+# Load the text classification pipeline
+text_classification_pipeline = utils.load_text_classification_pipeline()
 
 
 @app.get(

@@ -34,5 +34,6 @@ repos:
       'types': [python]
       additional_dependencies:
       - "fastapi[standard]"
+      - "transformers"
       pass_filenames: false
       stages: [pre-commit]
