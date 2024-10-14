@@ -1,5 +1,11 @@
 import unittest
-from api.utils import profanity_replace, detect_harmful_content
+from api.utils import (
+    profanity_replace,
+    detect_harmful_content,
+    similarity_cosine,
+    similarity_euclidean,
+    similarity_manhattan,
+)
 
 
 class test_profanity_replace(unittest.TestCase):
@@ -94,3 +100,222 @@ class TestHandleHarmfulContent(unittest.TestCase):
         Test handle_harmful_content function with invalid text input scenario
         """
         self.assertIsNone(detect_harmful_content("pipe", "text"))
+
+
+class TestSimilarityCosine(unittest.TestCase):
+    def test_similarity_cosine_non_list_input(self):
+        """
+        Test similarity_cosine function with non-list input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine("input"),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_cosine_empty_list_input(self):
+        """
+        Test similarity_cosine function with empty list input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine([]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_cosine_same_input(self):
+        """
+        Test similarity_cosine function with same input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine(["input1", "input1"]),
+            {
+                'similarity_matrix': {
+                    "input1": {"input1": 1.0},
+                },
+                'successful': True,
+            },
+        )
+
+    def test_similarity_cosine_not_string_input(self):
+        """
+        Test similarity_cosine function with not string input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine([123, 123]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_cosine_different_input(self):
+        """
+        Test similarity_cosine function with different input scenario
+        """
+        self.assertDictEqual(
+            similarity_cosine(["input1", "input2"]),
+            {
+                'similarity_matrix': {
+                    'input1': {
+                        'input1': 1.0,
+                        'input2': 0.0,
+                    },
+                    'input2': {
+                        'input1': 0.0,
+                        'input2': 1.0,
+                    },
+                },
+                'successful': True,
+            },
+        )
+
+
+class TestSimilarityEuclidean(unittest.TestCase):
+    def test_similarity_euclidean_non_list_input(self):
+        """
+        Test similarity_euclidean function with non-list input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean("input"),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_euclidean_empty_list_input(self):
+        """
+        Test similarity_euclidean function with empty list input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean([]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_euclidean_same_input(self):
+        """
+        Test similarity_euclidean function with same input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean(["input1", "input1"]),
+            {
+                'similarity_matrix': {
+                    "input1": {"input1": 1.0},
+                },
+                'successful': True,
+            },
+        )
+
+    def test_similarity_euclidean_not_string_input(self):
+        """
+        Test similarity_euclidean function with not string input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean([123, 123]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_euclidean_different_input(self):
+        """
+        Test similarity_euclidean function with different input scenario
+        """
+        self.assertDictEqual(
+            similarity_euclidean(["input1", "input2"]),
+            {
+                'similarity_matrix': {
+                    'input1': {
+                        'input1': 0.0,
+                        'input2': 1.4142135623730951,
+                    },
+                    'input2': {
+                        'input1': 1.4142135623730951,
+                        'input2': 0.0,
+                    },
+                },
+                'successful': True,
+            },
+        )
+
+
+class TestSimilarityManhattan(unittest.TestCase):
+    def test_similarity_manhattan_non_list_input(self):
+        """
+        Test similarity_manhattan function with non-list input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan("input"),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_manhattan_empty_list_input(self):
+        """
+        Test similarity_manhattan function with empty list input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan([]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_manhattan_same_input(self):
+        """
+        Test similarity_manhattan function with same input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan(["input1", "input1"]),
+            {
+                'similarity_matrix': {
+                    "input1": {"input1": 1.0},
+                },
+                'successful': True,
+            },
+        )
+
+    def test_similarity_manhattan_not_string_input(self):
+        """
+        Test similarity_manhattan function with not string input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan([123, 123]),
+            {
+                'similarity_matrix': None,
+                'successful': False,
+            },
+        )
+
+    def test_similarity_manhattan_different_input(self):
+        """
+        Test similarity_manhattan function with different input scenario
+        """
+        self.assertDictEqual(
+            similarity_manhattan(["input1", "input2"]),
+            {
+                'similarity_matrix': {
+                    'input1': {
+                        'input1': 0.0,
+                        'input2': 2.0,
+                    },
+                    'input2': {
+                        'input1': 2.0,
+                        'input2': 0.0,
+                    },
+                },
+                'successful': True,
+            },
+        )
