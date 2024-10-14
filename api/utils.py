@@ -1,7 +1,7 @@
 import os.path as path
 
 
-def profanity_replacement(input):
+def profanity_replace(input):
     """
     This function takes a string as input and checks if any word in the string
      is a profanity word. If a profanity word is found, it replaces the word
