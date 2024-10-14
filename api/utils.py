@@ -1,7 +1,11 @@
 import os.path as path
 from transformers import pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
+from sklearn.metrics.pairwise import (
+    cosine_similarity,
+    euclidean_distances,
+    manhattan_distances,
+)
 import pandas as pd
 
 
@@ -214,6 +218,60 @@ def similarity_euclidean(input_list):
         output = {}
         output['successful'] = True
         output['similarity_matrix'] = euclidean_sim_df.to_dict()
+
+        return output
+
+    except TypeError:
+        return {"successful": False, "similarity_matrix": None}
+
+
+def similarity_manhattan(input_list):
+    """
+    This function takes a list of strings as input and calculates the manhattan
+    similarity between the strings.
+    The function returns a dictionary with keys: successful, similarity_matrix.
+
+    :param input_list: list of strings
+    :return: dictionary with keys: successful, similarity_matrix
+    """
+
+    try:
+        # Input validation
+        if not isinstance(input_list, list):
+            raise TypeError
+        if len(input_list) < 2:
+            raise TypeError
+        if not all(isinstance(x, str) for x in input_list):
+            raise TypeError
+        if len(set(input_list)) == 1:
+            return {
+                "successful": True,
+                "similarity_matrix":
+                {
+                    input_list[0]: {
+                        input_list[0]: 1.0,
+                    },
+                },
+            }
+
+        # Convert the texts to TF-IDF vectors
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(input_list)
+
+        # Compute manhattan similarity
+        manhattan_sim = manhattan_distances(tfidf_matrix, tfidf_matrix)
+
+        # Display the results as a DataFrame for better readability
+        manhattan_sim_df = pd.DataFrame(
+            manhattan_sim,
+            index=input_list,
+            columns=input_list,
+        )
+
+        # Output the manhattan similarity matrix
+        output = {}
+        output['successful'] = True
+        output['similarity_matrix'] = manhattan_sim_df.to_dict()
 
         return output
 
