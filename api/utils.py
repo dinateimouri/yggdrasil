@@ -76,3 +76,35 @@ def load_text_classification_pipeline():
         return pipe
     except Exception:
         return None
+
+
+def handle_harmful_content(pipe, input_text):
+    """
+    This function takes a string as input and checks if the input text is
+    harmful.
+    If the input text is harmful, it returns the probability of harmfulness.
+    If the input text is not harmful, it returns 0.
+
+    :param pipe: pipeline object
+    :param input_text: string
+    :return: float
+    """
+    try:
+        # Input validation
+        if isinstance(input_text, int):
+            input_text = str(input_text)
+        if not isinstance(input_text, str):
+            raise TypeError
+        if isinstance(pipe, pipeline):
+            raise TypeError
+
+        # Check if the input text is harmful
+        output = pipe(input_text)
+        if output[0]['label'] == 'toxic':
+            return output[0]['score']
+        else:
+            return None
+    except TypeError:
+        return None
+    except Exception:
+        return None
