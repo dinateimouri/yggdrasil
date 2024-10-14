@@ -1,5 +1,5 @@
 import unittest
-from api.utils import profanity_replace
+from api.utils import profanity_replace, handle_harmful_content
 
 
 class test_profanity_replace(unittest.TestCase):
@@ -80,3 +80,17 @@ class test_profanity_replace(unittest.TestCase):
                 'successful': False,
             },
         )
+
+
+class TestHandleHarmfulContent(unittest.TestCase):
+    def test_invalid_text_input(self):
+        """
+        Test handle_harmful_content function with invalid input scenario
+        """
+        self.assertIsNone(handle_harmful_content("pipe", None))
+
+    def test_invalid_pipeline_input(self):
+        """
+        Test handle_harmful_content function with invalid text input scenario
+        """
+        self.assertIsNone(handle_harmful_content("pipe", "text"))
