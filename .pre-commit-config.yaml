@@ -13,6 +13,9 @@ repos:
   rev: '5.0.4'
   hooks:
   - id: flake8
+    args:
+    # A bug with Flake8 throwing "F821: undefined name `name`"
+    - --extend-ignore=F821
 
 - repo: https://github.com/asottile/add-trailing-comma
   rev: v2.2.3
