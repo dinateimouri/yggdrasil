@@ -13,6 +13,9 @@ repos:
   rev: '5.0.4'
   hooks:
   - id: flake8
+    args:
+    # A bug with Flake8 throwing "F821: undefined name `name`"
+    - --extend-ignore=F821
 
 - repo: https://github.com/asottile/add-trailing-comma
   rev: v2.2.3
@@ -23,7 +26,7 @@ repos:
   rev: v2.2.6
   hooks:
     - id: codespell
-      exclude: "api/config/"
+      exclude: "api/config/|manifests/api/profanity-list.yaml"
 
 - repo: local
   hooks:
@@ -37,5 +40,6 @@ repos:
       - "transformers"
       - "scikit-learn"
       - "pandas"
+      - "langchain_ollama"
       pass_filenames: false
       stages: [pre-commit]

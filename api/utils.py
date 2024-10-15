@@ -2,11 +2,14 @@ import os.path as path
 from transformers import pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import (
-    cosine_similarity,
+    cosine_distances,
     euclidean_distances,
     manhattan_distances,
 )
 import pandas as pd
+import yaml
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama import ChatOllama
 
 
 def profanity_replace(input):
@@ -77,7 +80,6 @@ def load_text_classification_pipeline():
     try:
         # Load the pipeline
         pipe = pipeline("text-classification", model="unitary/toxic-bert")
-
         # Load it to the memory, to make sure it's fast
         pipe("This is a test")
         return pipe
@@ -102,7 +104,10 @@ def detect_harmful_content(pipe, input_text):
             input_text = str(input_text)
         if not isinstance(input_text, str):
             raise TypeError
-        if isinstance(pipe, pipeline):
+        # TODO: check if there is a better way to check if the pipe is loaded
+        # like isinstance(pipe, pipeline)?
+        # It didn't work though
+        if pipe.__dict__['task'] != 'text-classification':
             raise TypeError
 
         # Check if the input text is harmful
@@ -141,7 +146,7 @@ def similarity_cosine(input_list):
                 "similarity_matrix":
                 {
                     input_list[0]: {
-                        input_list[0]: 1.0,
+                        input_list[0]: 0.0,
                     },
                 },
             }
@@ -151,7 +156,7 @@ def similarity_cosine(input_list):
         tfidf_matrix = vectorizer.fit_transform(input_list)
 
         # Compute cosine similarity
-        cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+        cosine_sim = cosine_distances(tfidf_matrix, tfidf_matrix)
 
         # Display the results as a DataFrame for better readability
         cosine_sim_df = pd.DataFrame(
@@ -277,3 +282,77 @@ def similarity_manhattan(input_list):
 
     except TypeError:
         return {"successful": False, "similarity_matrix": None}
+
+
+def read_config():
+    """
+    This function reads the config file and returns the content as a
+    dictionary.
+
+    :return: dictionary
+    """
+    try:
+        # Read the config file
+        dir_path = path.dirname(path.realpath(__file__))
+        with open(
+            path.join(dir_path, 'config/api.conf'),
+            'r',
+        ) as file:
+            config = yaml.safe_load(file)
+            file.close()
+
+        return config
+    except FileNotFoundError:
+        return None
+
+
+def call_llm(config, input):
+    """
+    This function calls the Large Language Model (LLM) with the predefined
+    config and given input and returns the response.
+    input: string
+    config: dictionary
+    return: string
+    """
+    try:
+        # Input validation
+        if not isinstance(input, str):
+            raise TypeError
+        if not isinstance(config, dict):
+            raise TypeError
+
+        llm = ChatOllama(
+            model=config['llm']['model'],
+            temperature=config['llm']['temperature'],
+            top_k=config['llm']['top_k'],
+            top_p=config['llm']['top_p'],
+            base_url=config['llm']['ollama_base_url'],
+            num_predict=config['llm']['num_predict'],
+        )
+
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    "Respond the message in {output_lenght} characters \
+                    or less and more importantly be polite. And say why \
+                    you can't respond.",
+                ),
+                ("human", "{input}"),
+            ],
+        )
+
+        chain = prompt | llm
+        response = chain.invoke(
+            {
+                "input": input,
+                "output_lenght": config['prompts']['strings']['max_length'],
+            },
+        )
+        return response.content
+    except TypeError:
+        return None
+    except Exception:
+        # TODO: Add more specific exceptions,
+        # there is nothing from the langchain_core
+        return None

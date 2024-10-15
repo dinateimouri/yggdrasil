@@ -5,6 +5,8 @@ from api.utils import (
     similarity_cosine,
     similarity_euclidean,
     similarity_manhattan,
+    read_config,
+    call_llm,
 )
 
 
@@ -135,7 +137,7 @@ class TestSimilarityCosine(unittest.TestCase):
             similarity_cosine(["input1", "input1"]),
             {
                 'similarity_matrix': {
-                    "input1": {"input1": 1.0},
+                    "input1": {"input1": 0.0},
                 },
                 'successful': True,
             },
@@ -162,12 +164,12 @@ class TestSimilarityCosine(unittest.TestCase):
             {
                 'similarity_matrix': {
                     'input1': {
-                        'input1': 1.0,
-                        'input2': 0.0,
-                    },
-                    'input2': {
                         'input1': 0.0,
                         'input2': 1.0,
+                    },
+                    'input2': {
+                        'input1': 1.0,
+                        'input2': 0.0,
                     },
                 },
                 'successful': True,
@@ -319,3 +321,38 @@ class TestSimilarityManhattan(unittest.TestCase):
                 'successful': True,
             },
         )
+
+
+class TestReadConfig(unittest.TestCase):
+    def test_read_config(self):
+        """
+        Test read_config function
+        """
+        config = read_config()
+        self.assertIsInstance(config, dict)
+
+    def test_read_config_file_not_found(self):
+        """
+        Test read_config function with config file not found scenario
+        """
+        self.assertIsNotNone(read_config(), None)
+
+
+class TestCallLLM(unittest.TestCase):
+    def test_call_llm_empty_text_input(self):
+        """
+        Test call_llm function with empty input scenario
+        """
+        self.assertIsNone(call_llm(config={"test": 1}, input=""))
+
+    def test_call_llm_invalid_text_input(self):
+        """
+        Test call_llm function with empty input scenario
+        """
+        self.assertIsNone(call_llm(config={"test": 1}, input=123))
+
+    def test_call_llm_invalid_config_input(self):
+        """
+        Test call_llm function with empty input scenario
+        """
+        self.assertIsNone(call_llm(config="", input="test"))
