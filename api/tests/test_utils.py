@@ -5,6 +5,7 @@ from api.utils import (
     similarity_cosine,
     similarity_euclidean,
     similarity_manhattan,
+    read_config,
 )
 
 
@@ -319,3 +320,18 @@ class TestSimilarityManhattan(unittest.TestCase):
                 'successful': True,
             },
         )
+
+
+class TestReadConfig(unittest.TestCase):
+    def test_read_config(self):
+        """
+        Test read_config function
+        """
+        config = read_config()
+        self.assertIsInstance(config, dict)
+
+    def test_read_config_file_not_found(self):
+        """
+        Test read_config function with config file not found scenario
+        """
+        self.assertIsNotNone(read_config(), None)
