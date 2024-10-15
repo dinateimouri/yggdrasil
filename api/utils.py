@@ -2,7 +2,7 @@ import os.path as path
 from transformers import pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import (
-    cosine_similarity,
+    cosine_distances,
     euclidean_distances,
     manhattan_distances,
 )
@@ -77,7 +77,6 @@ def load_text_classification_pipeline():
     try:
         # Load the pipeline
         pipe = pipeline("text-classification", model="unitary/toxic-bert")
-
         # Load it to the memory, to make sure it's fast
         pipe("This is a test")
         return pipe
@@ -102,7 +101,10 @@ def detect_harmful_content(pipe, input_text):
             input_text = str(input_text)
         if not isinstance(input_text, str):
             raise TypeError
-        if isinstance(pipe, pipeline):
+        # TODO: check if there is a better way to check if the pipe is loaded
+        # like isinstance(pipe, pipeline)?
+        # It didn't work though
+        if pipe.__dict__['task'] != 'text-classification':
             raise TypeError
 
         # Check if the input text is harmful
@@ -141,7 +143,7 @@ def similarity_cosine(input_list):
                 "similarity_matrix":
                 {
                     input_list[0]: {
-                        input_list[0]: 1.0,
+                        input_list[0]: 0.0,
                     },
                 },
             }
@@ -151,7 +153,7 @@ def similarity_cosine(input_list):
         tfidf_matrix = vectorizer.fit_transform(input_list)
 
         # Compute cosine similarity
-        cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+        cosine_sim = cosine_distances(tfidf_matrix, tfidf_matrix)
 
         # Display the results as a DataFrame for better readability
         cosine_sim_df = pd.DataFrame(
