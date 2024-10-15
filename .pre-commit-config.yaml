@@ -40,5 +40,6 @@ repos:
       - "transformers"
       - "scikit-learn"
       - "pandas"
+      - "langchain_ollama"
       pass_filenames: false
       stages: [pre-commit]

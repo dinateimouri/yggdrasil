@@ -135,7 +135,7 @@ class TestSimilarityCosine(unittest.TestCase):
             similarity_cosine(["input1", "input1"]),
             {
                 'similarity_matrix': {
-                    "input1": {"input1": 1.0},
+                    "input1": {"input1": 0.0},
                 },
                 'successful': True,
             },
@@ -162,12 +162,12 @@ class TestSimilarityCosine(unittest.TestCase):
             {
                 'similarity_matrix': {
                     'input1': {
-                        'input1': 1.0,
-                        'input2': 0.0,
-                    },
-                    'input2': {
                         'input1': 0.0,
                         'input2': 1.0,
+                    },
+                    'input2': {
+                        'input1': 1.0,
+                        'input2': 0.0,
                     },
                 },
                 'successful': True,
