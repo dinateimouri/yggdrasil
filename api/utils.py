@@ -7,6 +7,7 @@ from sklearn.metrics.pairwise import (
     manhattan_distances,
 )
 import pandas as pd
+import yaml
 
 
 def profanity_replace(input):
@@ -279,3 +280,25 @@ def similarity_manhattan(input_list):
 
     except TypeError:
         return {"successful": False, "similarity_matrix": None}
+
+
+def read_config():
+    """
+    This function reads the config file and returns the content as a
+    dictionary.
+
+    :return: dictionary
+    """
+    try:
+        # Read the config file
+        dir_path = path.dirname(path.realpath(__file__))
+        with open(
+            path.join(dir_path, 'config/api.conf'),
+            'r',
+        ) as file:
+            config = yaml.safe_load(file)
+            file.close()
+
+        return config
+    except FileNotFoundError:
+        return None
