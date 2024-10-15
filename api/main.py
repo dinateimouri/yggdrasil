@@ -184,10 +184,9 @@ def sync_chat(request: SyncChatRequest):
             status_code=400,
             content={"response": prompt_harmfulness_score},
         )
-
     profanity_replace_llm_response = utils.profanity_replace(llm_response)
     llm_response_cencored = None
-    if profanity_replace_output['successful']:
+    if profanity_replace_llm_response['successful']:
         llm_response_cencored = profanity_replace_llm_response['message']
     else:
         return JSONResponse(
@@ -197,7 +196,6 @@ def sync_chat(request: SyncChatRequest):
                                   please contact support",
             },
         )
-
     llm_response_harmfulness_score = utils.detect_harmful_content(
         pipe=text_classification_pipeline,
         input_text=llm_response_cencored,
