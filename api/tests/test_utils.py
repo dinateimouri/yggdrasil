@@ -344,13 +344,13 @@ class TestCallLLM(unittest.TestCase):
         Test call_llm function with empty input scenario
         """
         self.assertIsNone(call_llm(config={"test": 1}, input=""))
-    
+
     def test_call_llm_invalid_text_input(self):
         """
         Test call_llm function with empty input scenario
         """
         self.assertIsNone(call_llm(config={"test": 1}, input=123))
-    
+
     def test_call_llm_invalid_config_input(self):
         """
         Test call_llm function with empty input scenario
