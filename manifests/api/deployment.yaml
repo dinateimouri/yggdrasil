@@ -18,3 +18,15 @@ spec:
           ports:
             - containerPort: 8080
               hostPort: 8080 # To expose the port on Kind env
+          volumeMounts:
+          - name: api-config
+            mountPath: /api/config/api.conf
+          - name: profanity-list
+            mountPath: /api/config/profanity_list.txt
+      volumes:
+        - name: api-config
+          configMap:
+            name: yggrasil-api-config
+        - name: profanity-list
+          configMap:
+            name: yggrasil-api-profanity

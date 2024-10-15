@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yggrasil-api-config
+data:
+  api.conf: |
+   similarity_measure:
+    default: "cosine"
+    thresholds:
+        cosine: 0.5
+        euclidean: 0.7
+        manhattan: 0.7
+
+    prompts:
+        max_length: 10
+        strings:
+            min_length: 1
+            max_length: 100
+
+    harmfulness:
+        threshold: 3.0
+
+    llm:
+        ollama_base_url: "http://ollama:11434"
+        model: "llama3.2:1b"
+        temperature: 0.7
+        top_k: 50
+        top_p: 0.95
+        num_predict: 100
