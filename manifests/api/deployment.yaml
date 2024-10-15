@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yggdrasil-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yggdrasil-api
+  template:
+    metadata:
+      labels:
+        app: yggdrasil-api
+    spec:
+      containers:
+        - name: yggdrasil-api
+          image: ghcr.io/dinateimouri/yggdrasil-api:main
+          ports:
+            - containerPort: 8080
+              hostPort: 8080 # To expose the port on Kind env
