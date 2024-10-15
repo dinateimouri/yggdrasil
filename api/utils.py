@@ -8,6 +8,8 @@ from sklearn.metrics.pairwise import (
 )
 import pandas as pd
 import yaml
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama import ChatOllama
 
 
 def profanity_replace(input):
@@ -302,3 +304,43 @@ def read_config():
         return config
     except FileNotFoundError:
         return None
+
+
+def call_llm(config, input):
+    """
+    This function calls the Large Language Model (LLM) with the predefined
+    config and given input and returns the response.
+    input: string
+    config: dictionary
+    return: string
+    """
+
+    llm = ChatOllama(
+        model=config['llm']['model'],
+        temperature=config['llm']['temperature'],
+        top_k=config['llm']['top_k'],
+        top_p=config['llm']['top_p'],
+        base_url=config['llm']['ollama_base_url'],
+        num_predict=config['llm']['num_predict'],
+    )
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "Respond the message in {output_lenght} characters \
+                or less and more importantly be polite. And say why \
+                you can't respond.",
+            ),
+            ("human", "{input}"),
+        ],
+    )
+
+    chain = prompt | llm
+    response = chain.invoke(
+        {
+            "input": input,
+            "output_lenght": config['prompts']['strings']['max_length'],
+        },
+    )
+    return response.content
