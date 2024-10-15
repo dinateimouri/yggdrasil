@@ -6,6 +6,7 @@ from api.utils import (
     similarity_euclidean,
     similarity_manhattan,
     read_config,
+    call_llm,
 )
 
 
@@ -335,3 +336,23 @@ class TestReadConfig(unittest.TestCase):
         Test read_config function with config file not found scenario
         """
         self.assertIsNotNone(read_config(), None)
+
+
+class TestCallLLM(unittest.TestCase):
+    def test_call_llm_empty_text_input(self):
+        """
+        Test call_llm function with empty input scenario
+        """
+        self.assertIsNone(call_llm(config={"test": 1}, input=""))
+    
+    def test_call_llm_invalid_text_input(self):
+        """
+        Test call_llm function with empty input scenario
+        """
+        self.assertIsNone(call_llm(config={"test": 1}, input=123))
+    
+    def test_call_llm_invalid_config_input(self):
+        """
+        Test call_llm function with empty input scenario
+        """
+        self.assertIsNone(call_llm(config="", input="test"))
