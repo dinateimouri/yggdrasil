@@ -16,13 +16,15 @@ spec:
         - name: yggdrasil-api
           image: ghcr.io/dinateimouri/yggdrasil-api:main
           ports:
-            - containerPort: 8080
+            - containerPort: 80
               hostPort: 8080 # To expose the port on Kind env
           volumeMounts:
           - name: api-config
             mountPath: /api/config/api.conf
+            subPath: api.conf
           - name: profanity-list
             mountPath: /api/config/profanity_list.txt
+            subPath: profanity_list.txt
       volumes:
         - name: api-config
           configMap:
