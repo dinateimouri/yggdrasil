@@ -7,7 +7,7 @@ data:
    similarity_measure:
     default: "cosine"
     thresholds:
-        cosine: 0.5
+        cosine: 0.4
         euclidean: 0.7
         manhattan: 0.7
 
@@ -18,7 +18,7 @@ data:
             max_length: 100
 
     harmfulness:
-        threshold: 3.0
+        threshold: 0.5
 
     llm:
         ollama_base_url: "http://ollama:11434"
