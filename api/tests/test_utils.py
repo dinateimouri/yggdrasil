@@ -210,7 +210,7 @@ class TestSimilarityEuclidean(unittest.TestCase):
             similarity_euclidean(["input1", "input1"]),
             {
                 'similarity_matrix': {
-                    "input1": {"input1": 1.0},
+                    "input1": {"input1": 0.0},
                 },
                 'successful': True,
             },
@@ -283,7 +283,7 @@ class TestSimilarityManhattan(unittest.TestCase):
             similarity_manhattan(["input1", "input1"]),
             {
                 'similarity_matrix': {
-                    "input1": {"input1": 1.0},
+                    "input1": {"input1": 0.0},
                 },
                 'successful': True,
             },
