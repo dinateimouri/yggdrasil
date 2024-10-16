@@ -200,7 +200,7 @@ def similarity_euclidean(input_list):
                 "similarity_matrix":
                 {
                     input_list[0]: {
-                        input_list[0]: 1.0,
+                        input_list[0]: 0.0,
                     },
                 },
             }
@@ -254,7 +254,7 @@ def similarity_manhattan(input_list):
                 "similarity_matrix":
                 {
                     input_list[0]: {
-                        input_list[0]: 1.0,
+                        input_list[0]: 0.0,
                     },
                 },
             }
