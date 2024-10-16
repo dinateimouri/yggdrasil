@@ -14,20 +14,20 @@ else
   URL=$1
 fi
 
-# print function
+# Print function
 print_output () {
   check_mark=$(python3 -c 'print("\u2705")')
   cross_mark=$(python3 -c 'print("\u274C")')
   if [[ $1 -eq $3 ]]; then
-    # GREEN='\033[0;32m'
-    # RED='\033[0;31m'
-
     echo "Test scenario '"$2"' passed! $check_mark"
   else
     echo "Test scenario '"$2"' failed! $cross_mark"
   fi
 }
 
+# Test function
+# Usage: 
+# test_func $URL/<api-endpoint> "<test-message-to-be-printed>" <expected-behavior(status code/text)> "<request-body(optional)>" "<regex-query-pattern(optional)>"
 test_func () {
   if [[ $3 -eq 'llm' ]]; then
     response=$(curl -X POST -s $1 -d "$4" -H 'Content-Type: application/json' -H 'accept: application/json')

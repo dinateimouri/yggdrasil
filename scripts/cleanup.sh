@@ -9,3 +9,6 @@ sleep 5
 
 # Delete Kind cluster
 kind delete cluster
+
+smiley=$(python3 -c 'print("\u263A")')
+echo "Have a nice day! See you soon! $smiley"
