@@ -4,12 +4,12 @@ metadata:
   name: yggrasil-api-config
 data:
   api.conf: |
-   similarity_measure:
-    default: "cosine"
-    thresholds:
-        cosine: 0.4
-        euclidean: 0.7
-        manhattan: 0.7
+    similarity_measure:
+      default: "cosine"
+      thresholds:
+          cosine: 0.4
+          euclidean: 0.7
+          manhattan: 0.7
 
     prompts:
         max_length: 10
