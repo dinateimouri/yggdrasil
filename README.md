@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/dinateimouri/yggdrasil/actions/workflows/test-api.yaml/badge.svg?branch=main)](https://github.com/dinateimouri/yggdrasil/actions/workflows/test-api.yaml)
 
-Yggdrasil is a project named after [the Norse tree of life](https://en.wikipedia.org/wiki/Yggdrasil). It is basically adding an API layer over [Ollama](https://ollama.com/) deployed on top of [Kubernetes](https://kubernetes.io).
+Yggdrasil is a project named after [the Norse tree of life](https://en.wikipedia.org/wiki/Yggdrasil). It is basically adding an API layer over [Ollama](https://ollama.com/) deployed on top of [Kubernetes](https://kubernetes.io). The whole process on how I started and implemented is captured in [the very first issue which is an epic](https://github.com/dinateimouri/yggdrasil/issues/1). Moreover, the lessons learned and design decision can be found in the [LESSONS_LEARNED.md document](./LESSONS_LEARNED.md).
 
 ```mermaid
 flowchart LR
@@ -47,11 +47,11 @@ To get started with, the following items are required:
 - [Kind](https://kind.sigs.k8s.io/)
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://www.docker.com/)
-- [Python](https://www.python.org/)
+- [Python 3.12](https://www.python.org/)
 
 ## Quick start
 
-To get started run the following:
+It has been tested on MacOs (Intel) and Ubuntu 22.04. To get started run the following:
 
 ```bash
 git clone git@github.com:dinateimouri/yggdrasil.git
@@ -61,11 +61,36 @@ git clone git@github.com:dinateimouri/yggdrasil.git
 
 ### Running the tests
 
-To minimize the required packages for the stack `unittest` is used. To run the unit tests manually, you need to run:
+#### Unit Tests
+
+To minimize the required packages for the stack, `unittest` is used. To run the unit tests manually, you need to run:
 
 ```bash
-python3 -m unittest
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r ./api/requirements.txt
+python3 -m unittest disvocer
 ```
+
+#### Integration Tests
+
+Integration Tests can be executed **after** the kind stack is running and everything is deployed on top of it:
+
+```bash
+./scripts/integration-test.sh
+```
+
+#### Performance Tests
+
+The performance tests are implemented using Locust and they can be executed **after** the kind stack is running and everything is deployed on top of it
+
+```bash
+./scripts/performance-test.sh
+```
+
+## Interested in contributing
+
+If you are interested in contributing read [CONTRIBUTORS_GUIDE](./CONTRIBUTORS_GUIDE.md)
 
 ## Cleanup
 

@@ -26,7 +26,7 @@ print_output () {
 }
 
 # Test function
-# Usage: 
+# Usage:
 # test_func $URL/<api-endpoint> "<test-message-to-be-printed>" <expected-behavior(status code/text)> "<request-body(optional)>" "<regex-query-pattern(optional)>"
 test_func () {
   if [[ $3 -eq 'llm' ]]; then
