@@ -1,4 +1,4 @@
-#! bash
+#! /bin/bash
 
 # Delete api manifests
 kubectl delete -f ./manifests/api
