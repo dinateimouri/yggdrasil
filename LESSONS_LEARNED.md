@@ -2,6 +2,22 @@
 
 This document aims to discuss challenges I faced during design and implementation of this assignment.
 
+## API Design
+
+At the moment, all of these packages and functions are implemented inside the API container, this leads to have a fat container with 8 GB of data. The main reason behind this is due to time limit I have. The best practice is to separate them into one or more container and leave API as a tiny service capable of handling thousands of requests.
+
+## Ollama and Llama3.2:1b
+
+The main reason for using Ollama and Llama3.2:1b is to be able to run them on my local machine.  This leads to have poor performance tests results. If there is a need to change it, it can be done simply as it follows the same principles.
+
+## Code quality over time
+
+As the deadline is/was approaching rather quickly and I have limited time, the code quality might worsen over time. So please take a look at my earlier commits to get to know my work quality better.
+
+## Future works and how it can be improved
+
+The very first improvement that comes to my mind and seems required, is to separate the sanitization algorithms from API itself. And the second one, would be to improve the code quality. And finally there is a list of nice to haves in [the epic list](https://github.com/dinateimouri/yggdrasil/issues/1), and I feel the `/async-chat` is one of the important ones (read about it [here](https://github.com/dinateimouri/yggdrasil/issues/15)).
+
 ## Filtering out disallowed words/phrases
 
 First of all, this function is implemented in [api/utils.py](./api/utils.py) as `profanity_replace()`.
@@ -54,3 +70,20 @@ from [Unitary](https://www.unitary.ai/). This model is able to understand the co
 
 I chose to implement the third option and use the pre-trained model listed above due to limited time for this
 assignment. Moreover, the [transformers](https://github.com/huggingface/transformers) library seems more stable than other libraries.
+
+## Similarity measures
+
+There are various similarity measures out there. For most of them, they need to be vectorized the input text and then execute the desired similarity measure. These similarity measures can be listed as follows (but it's not limited to this list):
+
+- Cosine distance
+- Manhattan distance
+- Euclidean distance
+- Haversine distance
+- Jaccard distance
+- Minkowski distance
+- Chebyshev distance
+- And many more
+
+### Design decision
+
+I chose to work with the first three similarity measures as they seem to be more popular and there are various well-maintained libraries implementing them efficiently. For this I used `scikit-learn` library.
