@@ -2,6 +2,10 @@
 
 [![Tests](https://github.com/dinateimouri/yggdrasil/actions/workflows/test-api.yaml/badge.svg?branch=main)](https://github.com/dinateimouri/yggdrasil/actions/workflows/test-api.yaml)
 
+<div style="text-align: center;">
+    <img src="./assets/img/Yggdrasil-docs.png" alt="Yggdrasil Docs">
+</div>
+
 Yggdrasil is a project named after [the Norse tree of life](https://en.wikipedia.org/wiki/Yggdrasil). It is basically adding an API layer over [Ollama](https://ollama.com/) deployed on top of [Kubernetes](https://kubernetes.io). The whole process on how I started and implemented is captured in [the very first issue which is an epic](https://github.com/dinateimouri/yggdrasil/issues/1). Moreover, the lessons learned and design decision can be found in the [LESSONS_LEARNED.md document](./LESSONS_LEARNED.md).
 
 ```mermaid
@@ -55,6 +59,8 @@ It has been tested on MacOs (Intel) and Ubuntu 22.04. To get started run the fol
 
 ```bash
 git clone git@github.com:dinateimouri/yggdrasil.git
+
+cd yggdrasil
 
 ./scripts/startup.sh
 ```
